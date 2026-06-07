@@ -193,10 +193,99 @@ textarea.fc{resize:vertical;min-height:70px}
 .ord-notif-view{background:linear-gradient(135deg,var(--base),var(--base2));color:#fff;border:none;padding:11px 24px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 .ord-notif-close{background:#f1f5f9;color:#555;border:none;padding:11px 20px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
 
+/* SIDEBAR OVERLAY */
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;cursor:pointer}
+@media(max-width:900px){.sb-overlay.show{display:block}}
+
 /* RESPONSIVE */
 @media(max-width:1100px){.stats-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-area{margin-left:0}.recent-activity{grid-template-columns:1fr}}
-@media(max-width:640px){.stats-grid{grid-template-columns:1fr}.pg-area{padding:13px}.form-grid{grid-template-columns:1fr}.form-grid3{grid-template-columns:1fr}.modal-box{max-width:100%!important;margin:8px;border-radius:12px;padding:18px}.dtbl th,.dtbl td{padding:8px 10px;font-size:12px}.topbar{height:50px;padding:0 14px}.card-hd{flex-wrap:wrap;gap:6px;padding:10px 13px}.ord-notif-box{padding:22px 16px 18px}}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main-area{margin-left:0}
+  .recent-activity{grid-template-columns:1fr}
+  .topbar{padding:0 14px}
+}
+@media(max-width:768px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .pg-title{font-size:16px}
+  .tb-admin-nm{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pg-area{padding:16px}
+}
+@media(max-width:480px){
+  /* STATS */
+  .stats-grid{grid-template-columns:1fr}
+  /* PAGE AREA */
+  .pg-area{padding:12px}
+  .pg-hd{margin-bottom:12px}
+  .pg-title{font-size:15px}
+  /* TOPBAR */
+  .topbar{height:50px;padding:0 12px}
+  .tb-bc{font-size:12px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tb-admin-nm{display:none}
+  .admin-av{width:30px;height:30px;font-size:12px}
+  /* FORMS */
+  .form-grid{grid-template-columns:1fr}
+  .form-grid3{grid-template-columns:1fr}
+  /* CARDS */
+  .card-hd{flex-wrap:wrap;gap:6px;padding:10px 13px}
+  .card-body{padding:13px}
+  /* TABLES */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tbl-wrap::-webkit-scrollbar{display:none}
+  .dtbl th,.dtbl td{padding:8px 10px;font-size:12px;white-space:nowrap}
+  /* MODAL */
+  .modal-box{max-width:100%!important;margin:8px;border-radius:12px;padding:16px}
+  .modal-ft{flex-wrap:wrap;gap:8px}
+  .modal-ft .btn{flex:1;justify-content:center}
+  /* LOGIN */
+  .login-card{padding:28px 18px;border-radius:12px}
+  /* NOTIFICATIONS */
+  .ord-notif-box{padding:20px 14px 16px;border-radius:14px}
+  .ord-notif-btns{flex-direction:column;gap:8px}
+  .ord-notif-view,.ord-notif-close{width:100%}
+  /* SETTINGS INLINE GRID */
+  [style*="grid-template-columns:1fr 1fr;gap:18px"]{grid-template-columns:1fr!important}
+  /* STAT CARD */
+  .stat-card{padding:14px}
+  .stat-v{font-size:18px}
+  .stat-ic{width:40px;height:40px;font-size:17px}
+  /* SRCH ROW */
+  .srch-inp{width:100%;max-width:100%}
+  /* PG-HD ACTION ROW WRAP */
+  .pg-hd > div{flex-wrap:wrap}
+  .pg-hd .srch-inp{flex:1;min-width:130px}
+  /* ORDER DETAIL GRID RESPONSIVE */
+  #ord-detail [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  /* FORM GRIDS IN MODALS */
+  .form-grid{grid-template-columns:1fr!important}
+  .form-grid3{grid-template-columns:1fr!important}
+  /* DASHBOARD RECENT ACTIVITY */
+  .recent-activity{grid-template-columns:1fr!important}
+  /* STAT GRID */
+  .stats-grid{grid-template-columns:1fr 1fr!important}
+  /* MODAL BOX FULL WIDTH */
+  .modal-box{max-width:100%!important;margin:8px;padding:18px}
+  /* TOPBAR ADMIN */
+  .tb-admin-nm{display:none}
+  .pg-area{padding:14px}
+  /* SETTINGS GRID */
+  [style*="grid-template-columns:1fr 1fr;gap:18px"]{grid-template-columns:1fr!important}
+}
+/* ── MOBILE TABLE → CARD (≤640px) ── */
+@media(max-width:640px){
+  .dtbl thead{display:none!important}
+  .dtbl,.dtbl tbody,.dtbl tr,.dtbl td{display:block!important;width:100%!important}
+  .dtbl tr{border:1px solid #e8ecf0;border-radius:10px;margin-bottom:11px;padding:10px 13px;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+  .dtbl td{display:flex!important;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:13px;gap:8px;min-height:30px}
+  .dtbl td:last-child{border-bottom:none;padding-top:8px}
+  .dtbl td::before{content:attr(data-label);font-weight:700;color:#666;font-size:11px;min-width:72px;flex-shrink:0;text-transform:uppercase;letter-spacing:.3px}
+  .dtbl td[data-label=""]::before{display:none}
+  .dtbl td[data-label=""]{justify-content:flex-end}
+  .dtbl img{width:46px!important;height:46px!important}
+  .sts-sel{font-size:12px;max-width:130px}
+  .tbl-wrap{overflow-x:unset}
+}
 </style>
 </head>
 <body>
@@ -275,12 +364,13 @@ textarea.fc{resize:vertical;min-height:70px}
     <button class="sb-logout" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 </aside>
+<div class="sb-overlay" id="sb-overlay" onclick="closeSb()"></div>
 
 <!-- MAIN CONTENT AREA -->
 <div class="main-area">
   <div class="topbar">
     <div class="tb-left">
-      <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa-solid fa-bars"></i></button>
+      <button class="hamburger" onclick="toggleSb()"><i class="fa-solid fa-bars"></i></button>
       <span class="tb-bc" id="tb-bc">Dashboard</span>
     </div>
     <div class="tb-right">
@@ -353,10 +443,13 @@ function showAdminPanel(userData){
   startOrderNotificationListener();
 }
 
-// ─── REAL-TIME ORDER NOTIFICATION ────────────────────────────────────────────
+// ─── REAL-TIME ORDER NOTIFICATION (QUEUE SYSTEM) ─────────────────────────────
 let _ordNotifUnlisten=null;
 let _knownOrderKeys=new Set();
 let _ordNotifReady=false;
+let _ordNotifQueue=[];
+let _ordNotifShowing=false;
+let _ordNotifTimer=null;
 
 function startOrderNotificationListener(){
   if(_ordNotifUnlisten)return;
@@ -370,13 +463,31 @@ function startOrderNotificationListener(){
       snap.forEach(o=>{
         if(!_knownOrderKeys.has(o.key)){
           _knownOrderKeys.add(o.key);
-          showOrderNotifPopup(o.key,o.val());
+          _ordNotifQueue.push({id:o.key,order:o.val()});
           loadPendingBadge();
+          if(!_ordNotifShowing)_showNextOrdNotif();
         }
       });
     }
   });
 }
+
+function _showNextOrdNotif(){
+  if(!_ordNotifQueue.length){_ordNotifShowing=false;return;}
+  _ordNotifShowing=true;
+  const {id,order}=_ordNotifQueue.shift();
+  showOrderNotifPopup(id,order);
+}
+
+window._dismissOrdNotif=function(goOrders){
+  clearTimeout(_ordNotifTimer);
+  const e=document.getElementById('ord-notif-overlay');
+  if(e)e.remove();
+  _ordNotifShowing=false;
+  if(goOrders)showPage('orders');
+  // Show next queued notification after short delay
+  setTimeout(_showNextOrdNotif,400);
+};
 
 function showOrderNotifPopup(id,order){
   const existing=document.getElementById('ord-notif-overlay');
@@ -386,29 +497,31 @@ function showOrderNotifPopup(id,order){
   const total=order.totalAmount||order.total||order.amount||0;
   const items=order.items?Object.values(order.items).length:0;
   const shortId=id.slice(-6).toUpperCase();
+  const waiting=_ordNotifQueue.length;
   const el=document.createElement('div');
   el.className='ord-notif-overlay';
   el.id='ord-notif-overlay';
   el.innerHTML=`
     <div class="ord-notif-box">
+      ${waiting>0?`<div style="background:#fff3cd;color:#856404;font-size:12px;font-weight:700;padding:6px 14px;border-radius:7px;margin-bottom:12px;text-align:center;border:1px solid #ffd966"><i class="fa-solid fa-layer-group"></i> আরও ${waiting}টি নতুন অর্ডার অপেক্ষায় আছে!</div>`:''}
       <div class="ord-notif-icon ord-notif-pulse"><i class="fa-solid fa-bag-shopping"></i></div>
-      <div class="ord-notif-title">🎉 New Order Received!</div>
-      <div class="ord-notif-sub">A new order has just been placed. Review it now.</div>
+      <div class="ord-notif-title">🎉 নতুন অর্ডার পাওয়া গেছে!</div>
+      <div class="ord-notif-sub">একটি নতুন অর্ডার যুক্ত হয়েছে। এখনই দেখুন।</div>
       <div class="ord-notif-info">
         <div class="ord-notif-row"><span>Order ID</span><span>#${shortId}</span></div>
         <div class="ord-notif-row"><span>Customer</span><span>${cust}</span></div>
         <div class="ord-notif-row"><span>Phone</span><span>${phone}</span></div>
-        ${items?`<div class="ord-notif-row"><span>Items</span><span>${items}</span></div>`:''}
+        ${items?`<div class="ord-notif-row"><span>Items</span><span>${items} টি পণ্য</span></div>`:''}
         <div class="ord-notif-row"><span>Total</span><span style="color:var(--base);font-size:15px">৳${Number(total).toLocaleString()}</span></div>
       </div>
       <div class="ord-notif-btns">
-        <button class="ord-notif-view" onclick="document.getElementById('ord-notif-overlay').remove();showPage('orders')"><i class="fa-solid fa-eye"></i> View Order</button>
-        <button class="ord-notif-close" onclick="document.getElementById('ord-notif-overlay').remove()">Dismiss</button>
+        <button class="ord-notif-view" onclick="_dismissOrdNotif(true)"><i class="fa-solid fa-eye"></i> View Order</button>
+        <button class="ord-notif-close" onclick="_dismissOrdNotif(false)">${waiting>0?`পরেরটি দেখুন (${waiting}) ›`:'Dismiss'}</button>
       </div>
     </div>`;
   document.body.appendChild(el);
-  // auto-dismiss after 45 seconds
-  setTimeout(()=>{const e=document.getElementById('ord-notif-overlay');if(e)e.remove();},45000);
+  clearTimeout(_ordNotifTimer);
+  _ordNotifTimer=setTimeout(()=>_dismissOrdNotif(false),45000);
 }
 
 // ─── SETTINGS ────────────────────────────────────────────────────────────────
@@ -564,13 +677,13 @@ async function pageDashboard(){
         <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
         <tbody>${orders.slice(0,10).map(o=>`
         <tr>
-          <td><strong style="font-size:11.5px;font-family:monospace">${o.orderId||o.id}</strong></td>
-          <td><strong>${o.customerName||'N/A'}</strong><br><small style="color:#aaa">${o.phone||''}</small></td>
-          <td><strong style="color:var(--base)">৳${(o.total||0).toLocaleString()}</strong></td>
-          <td><span style="font-size:12px;font-weight:600;color:#666">${(o.paymentMethod||'cod').toUpperCase()}</span></td>
-          <td><span class="bdg ${sb(o.status)}">${(o.status||'pending').toUpperCase()}</span></td>
-          <td style="font-size:11.5px;color:#aaa">${new Date(o.createdAt||Date.now()).toLocaleDateString('en-BD')}</td>
-          <td><select class="sts-sel" onchange="updateOrderStatus('${o.id}',this.value)">
+          <td data-label="Order ID"><strong style="font-size:11.5px;font-family:monospace">${o.orderId||o.id}</strong></td>
+          <td data-label="Customer"><strong>${o.customerName||'N/A'}</strong><br><small style="color:#aaa">${o.phone||''}</small></td>
+          <td data-label="Total"><strong style="color:var(--base)">৳${(o.total||0).toLocaleString()}</strong></td>
+          <td data-label="Payment"><span style="font-size:12px;font-weight:600;color:#666">${(o.paymentMethod||'cod').toUpperCase()}</span></td>
+          <td data-label="Status"><span class="bdg ${sb(o.status)}">${(o.status||'pending').toUpperCase()}</span></td>
+          <td data-label="Date" style="font-size:11.5px;color:#aaa">${new Date(o.createdAt||Date.now()).toLocaleDateString('en-BD')}</td>
+          <td data-label="Update"><select class="sts-sel" onchange="updateOrderStatus('${o.id}',this.value)">
             ${['pending','processing','shipped','delivered','cancelled'].map(s=>`<option value="${s}"${o.status===s?' selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
           </select></td>
         </tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:#aaa;padding:28px">No orders yet</td></tr>'}
@@ -684,13 +797,13 @@ function prodRows(prods){
     const cat=_cats.find(c=>c.id===p.categoryId);
     const img=(p.images&&p.images[0])||p.imageUrl||'https://placehold.co/44x44/f5f5f5/888?text=P';
     return`<tr>
-      <td><img src="${img}" onerror="this.src='https://placehold.co/44x44/f5f5f5/888?text=P'" alt=""></td>
-      <td><strong>${p.name}</strong>${p.featured?'<span class="bdg bdg-success" style="margin-left:6px">Featured</span>':''}<br><small style="color:#aaa;font-family:monospace">${p.sku||'No SKU'}</small></td>
-      <td><span style="font-size:12.5px">${cat?.name||p.category||'—'}</span></td>
-      <td><strong style="color:var(--base)">৳${(p.discountPrice||p.price||0).toLocaleString()}</strong>${p.discountPrice&&p.price?`<br><small style="text-decoration:line-through;color:#ccc">৳${p.price.toLocaleString()}</small>`:''}</td>
-      <td><span style="font-size:13px;font-weight:600">${p.stock===undefined||p.stock===null?'<span style="color:#888">∞</span>':p.stock}</span></td>
-      <td><span class="bdg ${p.status==='inactive'?'bdg-danger':'bdg-success'}">${p.status||'active'}</span></td>
-      <td style="text-align:center;white-space:nowrap">
+      <td data-label="Image"><img src="${img}" onerror="this.src='https://placehold.co/44x44/f5f5f5/888?text=P'" alt=""></td>
+      <td data-label="Product"><strong>${p.name}</strong>${p.featured?'<span class="bdg bdg-success" style="margin-left:6px">Featured</span>':''}<br><small style="color:#aaa;font-family:monospace">${p.sku||'No SKU'}</small></td>
+      <td data-label="Category"><span style="font-size:12.5px">${cat?.name||p.category||'—'}</span></td>
+      <td data-label="Price"><strong style="color:var(--base)">৳${(p.discountPrice||p.price||0).toLocaleString()}</strong>${p.discountPrice&&p.price?`<br><small style="text-decoration:line-through;color:#ccc">৳${p.price.toLocaleString()}</small>`:''}</td>
+      <td data-label="Stock"><span style="font-size:13px;font-weight:600">${p.stock===undefined||p.stock===null?'<span style="color:#888">∞</span>':p.stock}</span></td>
+      <td data-label="Status"><span class="bdg ${p.status==='inactive'?'bdg-danger':'bdg-success'}">${p.status||'active'}</span></td>
+      <td data-label="" style="text-align:right;white-space:nowrap">
         <button class="btn btn-edit btn-sm btn-ic" onclick="editProd('${p.id}')" title="Edit"><i class="fa-solid fa-pencil"></i></button>
         ${p.stock===0?`<button class="btn btn-sm btn-ic" onclick="restockProd('${p.id}')" title="Restock" style="background:#ecfdf5;color:#059669;border:1px solid #6ee7b7"><i class="fa-solid fa-rotate-left"></i></button>`:`<button class="btn btn-sm btn-ic" onclick="stockOutProd('${p.id}','${p.name.replace(/'/g,"\\'")}')" title="Mark Stock Out" style="background:#fff7ed;color:#ea580c;border:1px solid #fdba74"><i class="fa-solid fa-ban"></i></button>`}
         <button class="btn btn-del btn-sm btn-ic" onclick="delProd('${p.id}','${p.name.replace(/'/g,"\\'")}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
@@ -812,10 +925,10 @@ async function pageCategories(){
       <thead><tr><th>Icon</th><th>Category Name</th><th>Status</th><th style="text-align:center">Actions</th></tr></thead>
       <tbody>${_catsList.length?_catsList.map(c=>`
       <tr>
-        <td style="font-size:26px">${c.icon||'🛒'}</td>
-        <td><strong>${c.name}</strong></td>
-        <td><span class="bdg ${c.status==='inactive'?'bdg-danger':'bdg-success'}">${c.status||'active'}</span></td>
-        <td style="text-align:center;white-space:nowrap">
+        <td data-label="Icon" style="font-size:26px">${c.icon||'🛒'}</td>
+        <td data-label="Name"><strong>${c.name}</strong></td>
+        <td data-label="Status"><span class="bdg ${c.status==='inactive'?'bdg-danger':'bdg-success'}">${c.status||'active'}</span></td>
+        <td data-label="" style="text-align:right;white-space:nowrap">
           <button class="btn btn-edit btn-sm" onclick="editCat('${c.id}','${c.name.replace(/'/g,"\\'")}','${c.icon||'🛒'}','${c.status||'active'}')"><i class="fa-solid fa-pencil"></i> Edit</button>
           <button class="btn btn-del btn-sm" onclick="delCat('${c.id}','${c.name.replace(/'/g,"\\'")}')"><i class="fa-solid fa-trash"></i></button>
         </td>
@@ -857,27 +970,39 @@ async function pageBanners(){
   const pg=document.getElementById('pg-area');
   const snap=await get(ref(db,'banners'));
   _banners=[];if(snap.exists())snap.forEach(b=>_banners.push({id:b.key,...b.val()}));
+  // Sort by createdAt so order is consistent
+  _banners.sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0));
   pg.innerHTML=`
   <div class="pg-hd">
     <h2 class="pg-title"><i class="fa-solid fa-image"></i> Banners <span style="font-size:14px;font-weight:500;color:#888">(${_banners.length})</span></h2>
     <button class="btn btn-pri" onclick="openBanModal()"><i class="fa-solid fa-plus"></i> Add Banner</button>
   </div>
-  <div class="card">
-    <div class="tbl-wrap"><table class="dtbl">
-      <thead><tr><th>Image</th><th>Title</th><th>Link</th><th>Status</th><th style="text-align:center">Actions</th></tr></thead>
-      <tbody>${_banners.length?_banners.map(b=>`
-      <tr>
-        <td><img src="${b.imageUrl}" style="width:100px;height:50px;object-fit:cover;border-radius:6px" onerror="this.src='https://placehold.co/100x50/f5f5f5/888?text=Banner'" alt=""></td>
-        <td><strong>${b.title||'(No title)'}</strong></td>
-        <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><a href="${b.link||'#'}" target="_blank" style="color:var(--base)">${b.link||'—'}</a></td>
-        <td><span class="bdg ${b.status==='inactive'?'bdg-danger':'bdg-success'}">${b.status||'active'}</span></td>
-        <td style="text-align:center;white-space:nowrap">
-          <button class="btn btn-edit btn-sm btn-ic" onclick="editBan('${b.id}')"><i class="fa-solid fa-pencil"></i></button>
+  ${_banners.length?`
+  <div style="background:#f0f6ff;border:1px solid #c7dffe;border-radius:9px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:#2563eb">
+    <i class="fa-solid fa-circle-info"></i> মোট <strong>${_banners.length}টি</strong> ব্যানার আছে। প্রতিটি ব্যানারের নম্বর (#1, #2...) ইউজার প্যানেলে স্লাইডারের ক্রম নির্দেশ করে।
+  </div>`:''}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:20px">
+    ${_banners.length?_banners.map((b,i)=>`
+    <div style="background:#fff;border-radius:12px;overflow:hidden;border:2px solid ${b.status==='inactive'?'#fca5a5':'#e2e8f0'};box-shadow:0 2px 10px rgba(0,0,0,.07)">
+      <div style="position:relative">
+        <img src="${b.imageUrl}" style="width:100%;height:140px;object-fit:cover;display:block" onerror="this.src='https://placehold.co/400x140/f5f5f5/888?text=Banner+${i+1}'" alt="">
+        <div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,.75);color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:6px;letter-spacing:.5px">#${i+1}</div>
+        <div style="position:absolute;top:8px;right:8px"><span class="bdg ${b.status==='inactive'?'bdg-danger':'bdg-success'}" style="font-size:11px">${b.status==='inactive'?'Inactive':'Active'}</span></div>
+      </div>
+      <div style="padding:12px 14px">
+        <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.title||'(কোনো শিরোনাম নেই)'}</div>
+        ${b.link?`<div style="font-size:11.5px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:9px"><i class="fa-solid fa-link" style="color:var(--base);margin-right:4px"></i>${b.link}</div>`:'<div style="font-size:11.5px;color:#aaa;margin-bottom:9px">কোনো লিংক নেই</div>'}
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-edit btn-sm" onclick="editBan('${b.id}')" style="flex:1;justify-content:center"><i class="fa-solid fa-pencil"></i> Edit</button>
           <button class="btn btn-del btn-sm btn-ic" onclick="delBan('${b.id}')"><i class="fa-solid fa-trash"></i></button>
-        </td>
-      </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:#aaa;padding:36px">No banners yet.</td></tr>'}
-      </tbody>
-    </table></div>
+        </div>
+      </div>
+    </div>`).join(''):`
+    <div style="text-align:center;padding:48px 24px;color:#aaa;grid-column:1/-1;background:#fff;border-radius:12px;border:2px dashed #e2e8f0">
+      <i class="fa-solid fa-image" style="font-size:40px;display:block;margin-bottom:12px;opacity:.25"></i>
+      <div style="font-size:14px;font-weight:600">কোনো ব্যানার নেই</div>
+      <div style="font-size:12.5px;margin-top:4px">Add Banner বোতামে ক্লিক করে ব্যানার যোগ করুন।</div>
+    </div>`}
   </div>
   <div class="modal-ov" id="ban-modal">
     <div class="modal-box" style="max-width:500px">
@@ -961,16 +1086,16 @@ function ordRows(orders){
   if(!orders.length)return`<tr><td colspan="8" style="text-align:center;color:#aaa;padding:36px">No orders found.</td></tr>`;
   const sb=s=>({'pending':'bdg-warning','processing':'bdg-info','shipped':'bdg-info','delivered':'bdg-success','cancelled':'bdg-danger'}[s]||'bdg-gray');
   return orders.map(o=>`<tr>
-    <td><strong style="font-size:11.5px;font-family:monospace">${o.orderId||o.id}</strong></td>
-    <td><strong>${o.customerName||'N/A'}</strong><br><small style="color:#aaa">${o.phone||''}</small></td>
-    <td style="font-size:12.5px">${(o.items||[]).length} items</td>
-    <td><strong style="color:var(--base)">৳${(o.total||0).toLocaleString()}</strong></td>
-    <td><span style="font-size:12px;font-weight:600;color:#666">${(o.paymentMethod||'cod').toUpperCase()}</span></td>
-    <td><select class="sts-sel" onchange="updateOrderStatus('${o.id}',this.value)">
+    <td data-label="Order ID"><strong style="font-size:11.5px;font-family:monospace">${o.orderId||o.id}</strong></td>
+    <td data-label="Customer"><strong>${o.customerName||'N/A'}</strong><br><small style="color:#aaa">${o.phone||''}</small></td>
+    <td data-label="Items" style="font-size:12.5px">${(o.items||[]).length} items</td>
+    <td data-label="Total"><strong style="color:var(--base)">৳${(o.total||0).toLocaleString()}</strong></td>
+    <td data-label="Payment"><span style="font-size:12px;font-weight:600;color:#666">${(o.paymentMethod||'cod').toUpperCase()}</span></td>
+    <td data-label="Status"><select class="sts-sel" onchange="updateOrderStatus('${o.id}',this.value)">
       ${['pending','processing','shipped','delivered','cancelled'].map(s=>`<option value="${s}"${o.status===s?' selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
     </select></td>
-    <td style="font-size:11.5px;color:#aaa">${new Date(o.createdAt||Date.now()).toLocaleDateString('en-BD')}</td>
-    <td style="text-align:center"><button class="btn btn-info btn-sm btn-ic" onclick="viewOrd('${o.id}')" title="View"><i class="fa-solid fa-eye"></i></button></td>
+    <td data-label="Date" style="font-size:11.5px;color:#aaa">${new Date(o.createdAt||Date.now()).toLocaleDateString('en-BD')}</td>
+    <td data-label=""><button class="btn btn-info btn-sm btn-ic" onclick="viewOrd('${o.id}')" title="View"><i class="fa-solid fa-eye"></i></button></td>
   </tr>`).join('');
 }
 window.filterOrds=()=>{
@@ -1026,11 +1151,11 @@ async function pageCustomers(){
       <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Joined</th></tr></thead>
       <tbody>${users.length?users.map(u=>`
       <tr>
-        <td><strong>${u.name||'N/A'}</strong></td>
-        <td style="font-size:12.5px">${u.email||'—'}</td>
-        <td>${u.phone||'—'}</td>
-        <td style="font-size:12px;color:#888;max-width:180px;overflow:hidden;text-overflow:ellipsis">${(u.address||'').slice(0,50)||'—'}</td>
-        <td style="font-size:12px;color:#aaa;white-space:nowrap">${u.createdAt?new Date(u.createdAt).toLocaleDateString('en-BD'):'—'}</td>
+        <td data-label="Name"><strong>${u.name||'N/A'}</strong></td>
+        <td data-label="Email" style="font-size:12.5px">${u.email||'—'}</td>
+        <td data-label="Phone">${u.phone||'—'}</td>
+        <td data-label="Address" style="font-size:12px;color:#888;max-width:180px;overflow:hidden;text-overflow:ellipsis">${(u.address||'').slice(0,50)||'—'}</td>
+        <td data-label="Joined" style="font-size:12px;color:#aaa;white-space:nowrap">${u.createdAt?new Date(u.createdAt).toLocaleDateString('en-BD'):'—'}</td>
       </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:#aaa;padding:36px">No customers yet.</td></tr>'}
       </tbody>
     </table></div>
@@ -1053,12 +1178,12 @@ async function pageMessages(){
       <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Message</th><th>Date</th><th style="text-align:center">Action</th></tr></thead>
       <tbody>${msgs.length?msgs.map(m=>`
       <tr>
-        <td><strong>${m.name||'N/A'}</strong></td>
-        <td>${m.phone||'—'}</td>
-        <td style="font-size:12.5px">${m.email||'—'}</td>
-        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:#555">${m.message||''}</td>
-        <td style="font-size:12px;color:#aaa;white-space:nowrap">${m.createdAt?new Date(m.createdAt).toLocaleDateString('en-BD'):'—'}</td>
-        <td style="text-align:center"><button class="btn btn-del btn-sm btn-ic" onclick="delMsg('${m.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button></td>
+        <td data-label="Name"><strong>${m.name||'N/A'}</strong></td>
+        <td data-label="Phone">${m.phone||'—'}</td>
+        <td data-label="Email" style="font-size:12.5px">${m.email||'—'}</td>
+        <td data-label="Message" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:#555">${m.message||''}</td>
+        <td data-label="Date" style="font-size:12px;color:#aaa;white-space:nowrap">${m.createdAt?new Date(m.createdAt).toLocaleDateString('en-BD'):'—'}</td>
+        <td data-label=""><button class="btn btn-del btn-sm btn-ic" onclick="delMsg('${m.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button></td>
       </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:#aaa;padding:36px">No messages yet.</td></tr>'}
       </tbody>
     </table></div>
@@ -1196,11 +1321,11 @@ async function pageAdmins(){
       <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>User ID</th><th>Joined</th></tr></thead>
       <tbody>${admins.length?admins.map(u=>`
       <tr>
-        <td><strong>${u.name||'Admin'}</strong></td>
-        <td style="font-size:12.5px">${u.email||'—'}</td>
-        <td><span class="bdg bdg-success"><i class="fa-solid fa-shield-halved"></i> ADMIN</span></td>
-        <td style="font-size:11.5px;font-family:monospace;color:#888">${u.id}</td>
-        <td style="font-size:12px;color:#aaa">${u.createdAt?new Date(u.createdAt).toLocaleDateString('en-BD'):'—'}</td>
+        <td data-label="Name"><strong>${u.name||'Admin'}</strong></td>
+        <td data-label="Email" style="font-size:12.5px">${u.email||'—'}</td>
+        <td data-label="Role"><span class="bdg bdg-success"><i class="fa-solid fa-shield-halved"></i> ADMIN</span></td>
+        <td data-label="User ID" style="font-size:11.5px;font-family:monospace;color:#888">${u.id}</td>
+        <td data-label="Joined" style="font-size:12px;color:#aaa">${u.createdAt?new Date(u.createdAt).toLocaleDateString('en-BD'):'—'}</td>
       </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:#aaa;padding:36px">No admin users found.</td></tr>'}
       </tbody>
     </table></div>
@@ -1288,6 +1413,25 @@ window.seedDefaultProducts=async()=>{
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 loadSettings();
+</script>
+<script>
+window.toggleSb=function(){
+  var sb=document.getElementById('sidebar');
+  var ov=document.getElementById('sb-overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+};
+window.closeSb=function(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('show');
+};
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.sb-link').forEach(function(el){
+    el.addEventListener('click',function(){
+      if(window.innerWidth<=900)closeSb();
+    });
+  });
+});
 </script>
 </body>
 </html>
