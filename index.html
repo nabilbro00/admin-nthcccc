@@ -1189,6 +1189,13 @@ async function loadAllData() {
   }
   filteredProducts = [...allProducts];
   filteredCustomers = [...allCustomers];
+
+  // On login: immediately push products backup to Firestore so user panel can read them
+  // This ensures existing products are visible even before the admin makes any change
+  if(allProducts.length) {
+    const _prodsClean = allProducts.map(p=>({...p, img:(p.img?.startsWith('data:')&&p.img.length>900000)?'':p.img}));
+    setDoc(doc(db,'appSettings','productsList'), {items:_prodsClean, updatedAt:new Date().toISOString()}).catch(()=>{});
+  }
 }
 
 let _ordersUnsubscribe = null;
@@ -1295,6 +1302,14 @@ function saveAdminDataToStorage() {
   setDoc(doc(db,'appSettings','categories'), {items: allCategories}).catch(err=>{
     if(err.code==='permission-denied') showAdminToast('⚠️ Firebase Rules আপডেট করুন (Console → Firestore → Rules)','warning');
     else console.warn('[Firestore] categories:',err.message);
+  });
+
+  // Consolidated products backup — user panel reads this when hosted on different domain
+  // Strip oversized base64 images to stay within Firestore 1 MB document limit
+  const _prodsClean = allProducts.map(p=>({...p, img:(p.img?.startsWith('data:')&&p.img.length>900000)?'':p.img}));
+  setDoc(doc(db,'appSettings','productsList'), {items:_prodsClean, updatedAt:new Date().toISOString()}).catch(err=>{
+    if(err.code==='permission-denied') showAdminToast('⚠️ Firebase Rules আপডেট করুন (Console → Firestore → Rules)','warning');
+    else console.warn('[Firestore] productsList:',err.message);
   });
 }
 
