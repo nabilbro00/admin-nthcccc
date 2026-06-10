@@ -1286,10 +1286,16 @@ function saveAdminDataToStorage() {
   localStorage.setItem('hc_banners', JSON.stringify(allBanners));
   localStorage.setItem('hc_coupons', JSON.stringify(allCoupons));
   localStorage.setItem('hc_categories', JSON.stringify(allCategories));
-  // Firebase Firestore sync (async, non-blocking)
-  setDoc(doc(db,'appSettings','banners'), {items: allBanners}).catch(()=>{});
-  setDoc(doc(db,'appSettings','coupons'), {items: allCoupons}).catch(()=>{});
-  setDoc(doc(db,'appSettings','categories'), {items: allCategories}).catch(()=>{});
+  // Firebase Firestore sync — banners use canvas-compressed base64 (~50–150 KB each), safe for Firestore
+  // Safety: strip any uncompressed base64 > 900 KB to avoid Firestore 1 MB limit
+  const _bannersClean = allBanners.map(b=>({...b, img: (b.img?.startsWith('data:') && b.img.length>900000)?'':b.img}));
+  setDoc(doc(db,'appSettings','banners'), {items: _bannersClean}).catch(err=>console.warn('[Firestore] banners:',err.message));
+  setDoc(doc(db,'appSettings','coupons'), {items: allCoupons}).catch(err=>console.warn('[Firestore] coupons:',err.message));
+
+  setDoc(doc(db,'appSettings','categories'), {items: allCategories}).catch(err=>{
+    if(err.code==='permission-denied') showAdminToast('⚠️ Firebase Rules আপডেট করুন (Console → Firestore → Rules)','warning');
+    else console.warn('[Firestore] categories:',err.message);
+  });
 }
 
 // ========== DASHBOARD ==========
@@ -1502,6 +1508,24 @@ window.deleteProduct = async function(id) {
   showAdminToast('পণ্য মুছে ফেলা হয়েছে','danger');
 }
 
+// ========== IMAGE COMPRESSION (Canvas — Firebase Storage ছাড়া) ==========
+function compressImage(base64, maxW, maxH, quality) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => resolve(base64);
+    img.src = base64;
+  });
+}
+
 window.previewImages = function(e) {
   const file = e.target.files[0];
   if(!file) return;
@@ -1509,24 +1533,14 @@ window.previewImages = function(e) {
   const status = document.getElementById('imgUploadStatus');
   const hint = document.getElementById('imgUploadHint');
   wrap.innerHTML = '';
-  status.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>কনভার্ট হচ্ছে...';
+  status.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>প্রক্রিয়া হচ্ছে...';
   hint.innerHTML = '';
   const reader = new FileReader();
   reader.onload = async ev => {
-    const base64 = ev.target.result;
-    document.getElementById('pImgUrl').value = base64;
-    wrap.innerHTML = `<img src="${base64}" class="img-preview" style="width:100%;height:120px;object-fit:cover;border-radius:8px;border:2px solid #a5d6a7;">`;
-    // Upload to Firebase Storage as base64
-    try {
-      const imgRef = ref(storage, 'products/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9.]/g,'_'));
-      await uploadString(imgRef, base64, 'data_url');
-      const url = await getDownloadURL(imgRef);
-      document.getElementById('pImgUrl').value = url;
-      status.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>ছবি সেভ হয়েছে!';
-    } catch {
-      // fallback: keep base64 if Firebase Storage fails
-      status.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>ছবি প্রস্তুত';
-    }
+    const compressed = await compressImage(ev.target.result, 800, 800, 0.80);
+    document.getElementById('pImgUrl').value = compressed;
+    wrap.innerHTML = `<img src="${compressed}" class="img-preview" style="width:100%;height:120px;object-fit:cover;border-radius:8px;border:2px solid #a5d6a7;">`;
+    status.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>ছবি প্রস্তুত';
   };
   reader.readAsDataURL(file);
 }
@@ -1537,26 +1551,17 @@ window.uploadBannerImg = function(e) {
   const area = document.getElementById('bannerImgArea');
   const status = document.getElementById('bannerImgStatus');
   const hint = document.getElementById('bannerImgHint');
-  status.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>কনভার্ট হচ্ছে...';
+  status.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>প্রক্রিয়া হচ্ছে...';
   hint.innerHTML = '';
   const reader = new FileReader();
   reader.onload = async ev => {
-    const base64 = ev.target.result;
-    document.getElementById('bannerImg').value = base64;
-    area.style.backgroundImage = `url('${base64}')`;
+    const compressed = await compressImage(ev.target.result, 1200, 500, 0.75);
+    document.getElementById('bannerImg').value = compressed;
+    area.style.backgroundImage = `url('${compressed}')`;
     area.style.backgroundSize = 'cover';
     area.style.backgroundPosition = 'center';
     area.style.height = '100px';
-    // Upload to Firebase Storage as base64
-    try {
-      const imgRef = ref(storage, 'banners/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9.]/g,'_'));
-      await uploadString(imgRef, base64, 'data_url');
-      const url = await getDownloadURL(imgRef);
-      document.getElementById('bannerImg').value = url;
-      status.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>ছবি সেভ হয়েছে!';
-    } catch {
-      status.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>ছবি প্রস্তুত';
-    }
+    status.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>ছবি প্রস্তুত';
   };
   reader.readAsDataURL(file);
 }
@@ -1800,7 +1805,8 @@ window.toggleBlockCustomer = function(id) {
 window.saveBanner = function(e) {
   e.preventDefault();
   const id = document.getElementById('editBannerId').value || 'b-'+Date.now();
-  const banner = {id,title:document.getElementById('bannerTitle').value,sub:document.getElementById('bannerSub').value,img:document.getElementById('bannerImg').value,link:document.getElementById('bannerLink').value,color:document.getElementById('bannerColor').value,active:true};
+  const imgVal = document.getElementById('bannerImg').value;
+  const banner = {id,title:document.getElementById('bannerTitle').value,sub:document.getElementById('bannerSub').value,img:imgVal,link:document.getElementById('bannerLink').value,color:document.getElementById('bannerColor').value,active:true};
   const idx = allBanners.findIndex(b=>b.id===id);
   if(idx>=0) allBanners[idx]=banner;
   else allBanners.push(banner);
@@ -2029,8 +2035,11 @@ function renderAnalytics() {
 function _getSettings() { return JSON.parse(localStorage.getItem('hc_settings')||'{}'); }
 function _saveSettings(obj) {
   localStorage.setItem('hc_settings', JSON.stringify(obj));
-  // Firebase Firestore sync (async, non-blocking)
-  setDoc(doc(db,'appSettings','settings'), obj).catch(()=>{});
+  // Logo is now canvas-compressed (~10–30 KB) — safe for Firestore 1MB limit
+  setDoc(doc(db,'appSettings','settings'), obj).catch(err=>{
+    if(err.code==='permission-denied') showAdminToast('⚠️ Firebase Rules আপডেট করুন (Console → Firestore → Rules)','warning');
+    else console.warn('[Firestore] settings:',err.message);
+  });
 }
 
 function loadSettingsForm() {
@@ -2087,14 +2096,28 @@ window.previewLogo = function(input) {
   reader.readAsDataURL(file);
 }
 
-window.saveLogo = function() {
+window.saveLogo = async function() {
   const preview = document.getElementById('logoPreview');
   if(!preview.src || preview.style.display==='none') { showAdminToast('আগে লোগো ছবি বেছে নিন','warning'); return; }
-  const s = _getSettings();
-  s.logo = preview.src;
-  _saveSettings(s);
-  applyAdminSettings();
-  showAdminToast('লোগো সংরক্ষণ হয়েছে!','success');
+  const btn = document.querySelector('[onclick="saveLogo()"]');
+  if(btn) { btn.disabled=true; btn.innerHTML='<span class="spinner-border spinner-border-sm me-1"></span>সেভ হচ্ছে...'; }
+  try {
+    let logoUrl = preview.src;
+    // Compress with Canvas (Firebase Storage দরকার নেই)
+    if(logoUrl.startsWith('data:')) {
+      logoUrl = await compressImage(logoUrl, 200, 200, 0.85);
+      preview.src = logoUrl;
+    }
+    const s = _getSettings();
+    s.logo = logoUrl;
+    _saveSettings(s);
+    applyAdminSettings();
+    showAdminToast('লোগো সংরক্ষণ হয়েছে!','success');
+  } catch(err) {
+    showAdminToast('লোগো সেভ ব্যর্থ হয়েছে: '+err.message,'danger');
+  } finally {
+    if(btn) { btn.disabled=false; btn.innerHTML='<i class="bi bi-check-lg me-1"></i>লোগো সেভ করুন'; }
+  }
 }
 
 window.removeLogo = function() {
